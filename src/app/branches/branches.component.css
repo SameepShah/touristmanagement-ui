@@ -1,0 +1,18 @@
+.content_body{
+    margin: 3%;
+}
+table {
+    width: 100%;
+}
+td, th {
+    width: 25%;
+  }
+
+.vspacer{
+    margin-bottom: 50px;
+}
+
+.searchField
+{
+    padding-right: 10px;
+}
