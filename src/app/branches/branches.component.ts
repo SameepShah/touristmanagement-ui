@@ -1,28 +1,10 @@
 import { Component, OnInit, ViewChild,AfterViewInit} from '@angular/core';
-import { MatPaginator} from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource} from '@angular/material/table';
 import { BranchService } from '../services/branch.service';
 import { Branch } from '../models/Branch';
 
-// export interface PeriodicElement {
-//   name: string;
-//   position: number;
-//   weight: number;
-//   symbol: string;
-// }
-// const ELEMENT_DATA: PeriodicElement[] = [
-//   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-//   {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-//   {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-//   {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-//   {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-//   {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-//   {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-//   {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-//   {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-//   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-// ];
 
 export interface Places{
   value: string;
@@ -40,26 +22,35 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   places: Places[] = [
-    { value:'1', text:'ANDAMAN' },
-    { value:'2', text:'THAILAND' },
-    { value:'3', text:'DUBAI' },
-    { value:'4', text:'SINGAPORE' },
-    { value:'5', text:'MALAYSIA' },
+    { value:'andaman', text:'ANDAMAN' },
+    { value:'thailand', text:'THAILAND' },
+    { value:'dubai', text:'DUBAI' },
+    { value:'singapore', text:'SINGAPORE' },
+    { value:'malaysia', text:'MALAYSIA' },
   ];
   branches = new Array<Branch>();
-  dataSource: MatTableDataSource<Branch>;
+  dataSource: MatTableDataSource<Branch> = new MatTableDataSource();
+  branchCode: string = '';
+  branchName: string = '';
+  place: string = '';
+  totalRows = 0;
+  pageSize = 1;
+  currentPage = 0;
+  pageSizeOptions: number[] = [1, 3, 5, 10];
+
+
   constructor(private branchService: BranchService){
     //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
   ngOnInit() {
+    //TODO: Instead of getBranches call searchBranches (POST)
     this.getBranches();
-    
   }
 
   ngAfterViewInit(){
-    // this.dataSource.paginator = this.paginator;
-    // this.dataSource.sort = this.sort;
+     this.dataSource.paginator = this.paginator;
+     this.dataSource.sort = this.sort;
   }
 
   getBranches(){
@@ -72,9 +63,51 @@ export class BranchesComponent implements OnInit, AfterViewInit {
 
   reloadBranchTable(branches)
   {
-    this.dataSource = new MatTableDataSource(branches);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;  
+    //this.dataSource = new MatTableDataSource(branches);
+    //this.dataSource.paginator = this.paginator;
+    //this.dataSource.sort = this.sort;  
+    this.dataSource.data = branches;
+    this.setDefaultSort();
+    this.setPagination(branches.count);
+  }
+
+  setPagination(length){
+    this.paginator.pageIndex = this.currentPage;
+    this.paginator.length = length;
+  }
+
+  setDefaultSort(){
+    const sortState: Sort = {active: 'branchCode', direction: 'asc'};
+    this.sort.active = sortState.active;
+    this.sort.direction = sortState.direction;
+    this.sort.sortChange.emit(sortState);
+  }
+
+  pageChanged(event: PageEvent) {
+    console.log({ event });
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex;
+    console.log("Page Size " + event.pageSize);
+    console.log("Page Index " + event.pageIndex);
+    //TODO: Call Search Branches
+    //this.getBranches();
+  }
+
+  searchBranches(){
+    //TODO: Call Search Branches from ngOnInit and on Search Click
+    var searchObj={
+      id:'',
+      BranchCode: this.branchCode,
+      BranchName: this.branchName,
+      Place: this.place,
+      PaginationSorting: {
+        PageIndex: this.paginator.pageIndex + 1,
+        PageSize: this.paginator.pageSize,
+        SortColumn: this.sort.active,
+        SortOrder: this.sort.direction == "asc" ? true : false,
+      },
+    }
+    console.log(searchObj);
   }
 
   applyFilter(event: Event) {
