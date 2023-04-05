@@ -4,6 +4,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource} from '@angular/material/table';
 import { BranchService } from '../services/branch.service';
 import { Branch } from '../models/Branch';
+import { UntypedFormBuilder } from '@angular/forms';
 
 
 export interface Places{
@@ -44,13 +45,14 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    //TODO: Instead of getBranches call searchBranches (POST)
-    this.getBranches();
+    //Instead of getBranches call searchBranches (POST)
+    //this.getBranches();
+    this.searchBranches();
   }
 
   ngAfterViewInit(){
-     this.dataSource.paginator = this.paginator;
-     this.dataSource.sort = this.sort;
+    //  this.dataSource.paginator = this.paginator;
+    //  this.dataSource.sort = this.sort;
   }
 
   getBranches(){
@@ -66,14 +68,15 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     //this.dataSource = new MatTableDataSource(branches);
     //this.dataSource.paginator = this.paginator;
     //this.dataSource.sort = this.sort;  
-    this.dataSource.data = branches;
+    this.dataSource.data = branches.branches;
     this.setDefaultSort();
-    this.setPagination(branches.count);
+    this.setPagination(branches.totalRecords);
   }
 
   setPagination(length){
     this.paginator.pageIndex = this.currentPage;
     this.paginator.length = length;
+    this.totalRows = length;
   }
 
   setDefaultSort(){
@@ -87,26 +90,34 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
+    this.totalRows = event.length;
     console.log("Page Size " + event.pageSize);
     console.log("Page Index " + event.pageIndex);
-    //TODO: Call Search Branches
-    //this.getBranches();
+    //Call Search Branches
+    this.searchBranches();
   }
 
   searchBranches(){
-    //TODO: Call Search Branches from ngOnInit and on Search Click
+    //Call Search Branches from ngOnInit and on Search Click
+    var pageIndex = this.paginator == undefined ? 1 :  this.paginator.pageIndex + 1;
+    var pageSize = this.paginator == undefined ? this.pageSize : this.paginator.pageSize;
     var searchObj={
       id:'',
       BranchCode: this.branchCode,
       BranchName: this.branchName,
       Place: this.place,
       PaginationSorting: {
-        PageIndex: this.paginator.pageIndex + 1,
-        PageSize: this.paginator.pageSize,
-        SortColumn: this.sort.active,
-        SortOrder: this.sort.direction == "asc" ? true : false,
+        PageIndex: pageIndex,
+        PageSize: pageSize,
+        SortColumn: this.sort == undefined ? 'branchCode' : this.sort.active,
+        SortOrder: this.sort == undefined ? true : (this.sort.direction == "asc" ? true : false),
       },
     }
+    this.branchService.searchBranches(searchObj).subscribe((response: any)=>{
+      this.branches = response.branches;
+      console.log(response);
+      this.reloadBranchTable(response);
+    });
     console.log(searchObj);
   }
 

@@ -15,4 +15,13 @@ export class BranchService {
     const url = environment.branchApiUri + 'branches';
     return this.http.get<Branch[]>(url);
   }
+
+  public searchBranches(searchRequest: any){
+    const url = environment.adminApiUri + 'search';
+    return this.http.post(url,searchRequest,{
+      headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8'}
+    });
+  }
 }
