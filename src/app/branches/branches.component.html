@@ -40,6 +40,7 @@
     <div class="vspacer"></div>
     <h2>Branches</h2>
     <div class="mat-elevation-z8" >
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
         <table mat-table [dataSource]="dataSource" matSort>
 
             <!--- Note that these columns can be defined in any order.
@@ -87,8 +88,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
+          <div *ngIf="branches.length<=0" class="nodata">
+              {{this.message}}
+          </div>
           <mat-paginator #paginator [length]="totalRows" [pageIndex]="currentPage" [pageSize]="pageSize" 
           [pageSizeOptions]="pageSizeOptions" (page)="pageChanged($event)" aria-label="Select page"></mat-paginator>
     </div>
+    
 </div>
 

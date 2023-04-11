@@ -38,6 +38,8 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   pageSize = 1;
   currentPage = 0;
   pageSizeOptions: number[] = [1, 3, 5, 10];
+  message: string = '';
+  isLoading: boolean = false;
 
 
   constructor(private branchService: BranchService){
@@ -69,6 +71,8 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     //this.dataSource.paginator = this.paginator;
     //this.dataSource.sort = this.sort;  
     this.dataSource.data = branches.branches;
+    this.message= branches.message;
+    console.log(this.dataSource);
     this.setDefaultSort();
     this.setPagination(branches.totalRecords);
   }
@@ -98,6 +102,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   }
 
   searchBranches(){
+    this.isLoading = true;
     //Call Search Branches from ngOnInit and on Search Click
     var pageIndex = this.paginator == undefined ? 1 :  this.paginator.pageIndex + 1;
     var pageSize = this.paginator == undefined ? this.pageSize : this.paginator.pageSize;
@@ -117,6 +122,12 @@ export class BranchesComponent implements OnInit, AfterViewInit {
       this.branches = response.branches;
       console.log(response);
       this.reloadBranchTable(response);
+      this.isLoading = false;
+    }, (response: any) => {
+      this.branches = response.error.branches;
+      console.log(response);
+      this.reloadBranchTable(response.error);
+      this.isLoading = false;
     });
     console.log(searchObj);
   }
