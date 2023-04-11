@@ -5,7 +5,7 @@ import { MatTableDataSource} from '@angular/material/table';
 import { BranchService } from '../services/branch.service';
 import { Branch } from '../models/Branch';
 import { UntypedFormBuilder } from '@angular/forms';
-
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export interface Places{
   value: string;
@@ -15,7 +15,14 @@ export interface Places{
 @Component({
   selector: 'app-branches',
   templateUrl: './branches.component.html',
-  styleUrls: ['./branches.component.css']
+  styleUrls: ['./branches.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class BranchesComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'branchCode', 'branchName', 'website','contact','email','createdDate'];
@@ -41,6 +48,10 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   message: string = '';
   isLoading: boolean = false;
 
+  //Variables for Expanded Grid
+  displayedColumnsWithExpand = [...this.displayedColumns, 'expand'];
+  expandedElement : Branch | null;
+  placesDisplayColumns: string[] = ['placeId','placeName','tariffAmount','edit'];
 
   constructor(private branchService: BranchService){
     //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
@@ -131,6 +142,11 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     });
     console.log(searchObj);
   }
+
+  editRecord(element: any, place: any){
+    alert(element.branchCode + ' -> ' + place.placeId);
+  }
+
 
   applyFilter(event: Event) {
     const target = event.target as HTMLInputElement;
