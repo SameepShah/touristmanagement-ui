@@ -144,7 +144,13 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   }
 
   editRecord(element: any, place: any){
-    alert(element.branchCode + ' -> ' + place.placeId);
+    if(element.places){
+      var editedPlace=[...element.places];
+      delete editedPlace['expanded'];
+      place.tariffAmount = 5;
+      element.places.map(obj=>place.placeId == obj.placeId ? editedPlace : obj);
+    }
+    alert('Id: ' + element.id  + '\nBranchCode: ' + element.branchCode + '\nPlaces: ' + JSON.stringify(element.places));
   }
 
 
