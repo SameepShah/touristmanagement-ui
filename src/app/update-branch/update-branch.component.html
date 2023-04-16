@@ -1,1 +1,11 @@
-<p>update-branch works!</p>
+<h1 mat-dialog-title>Update Place</h1>
+<div mat-dialog-content>
+  <p>Tariff Amount</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.place.tariffAmount">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.place" cdkFocusInitial>Update</button>
+</div>

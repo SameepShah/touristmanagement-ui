@@ -1,5 +1,5 @@
 export class Place{
-    public PlaceId: string;
-    public PlaceName: string;
-    public TariffAmount: number;
+    public placeId: string;
+    public placeName: string;
+    public tariffAmount: number;
 }

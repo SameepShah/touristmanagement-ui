@@ -6,11 +6,15 @@ import { BranchService } from '../services/branch.service';
 import { Branch } from '../models/Branch';
 import { UntypedFormBuilder } from '@angular/forms';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatDialog } from '@angular/material/dialog';
+import { UpdateBranchComponent } from '../update-branch/update-branch.component';
+import { Place } from '../models/Place';
 
-export interface Places{
+export interface PlaceDropdown{
   value: string;
   text: string;
 }
+
 
 @Component({
   selector: 'app-branches',
@@ -29,7 +33,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  places: Places[] = [
+  places: PlaceDropdown[] = [
     { value:'andaman', text:'ANDAMAN' },
     { value:'thailand', text:'THAILAND' },
     { value:'dubai', text:'DUBAI' },
@@ -52,8 +56,9 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   displayedColumnsWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement : Branch | null;
   placesDisplayColumns: string[] = ['placeId','placeName','tariffAmount','edit'];
+  branchPlaces: Place[] = [];
 
-  constructor(private branchService: BranchService){
+  constructor(private branchService: BranchService, public dialog: MatDialog){
     //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
@@ -144,13 +149,31 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   }
 
   editRecord(element: any, place: any){
-    if(element.places){
-      var editedPlace=[...element.places];
-      delete editedPlace['expanded'];
-      place.tariffAmount = 5;
-      element.places.map(obj=>place.placeId == obj.placeId ? editedPlace : obj);
+    if (element.places) {
+
+      const dialogRef = this.dialog.open(UpdateBranchComponent, {
+        width: '250px',
+        data: { branch: {...element}, place: {...place} }
+      });
+
+      dialogRef.afterClosed().subscribe(res => {
+        if(res){
+          console.log(res);
+          //TODO: Prepare Database Object from returned value to Update and Call API to Update the same 
+        }
+      });
+
+      // this.branchPlaces = JSON.parse(JSON.stringify(element.places));
+      // console.log(this.branchPlaces);
+      // var updatedObj : Place =  {
+      //   'placeId': place.placeId,
+      //   'placeName': place.placeName,
+      //   'tariffAmount':10
+      // };
+      // this.branchPlaces =  this.branchPlaces.map(obj => place.placeId == obj.placeId ?  updatedObj : obj);
     }
-    alert('Id: ' + element.id  + '\nBranchCode: ' + element.branchCode + '\nPlaces: ' + JSON.stringify(element.places));
+    //alert('Id: ' + element.id  + '\nBranchCode: ' + element.branchCode + '\nPlaces: ' + JSON.stringify(this.branchPlaces));
+    //console.log(element.places);
   }
 
 

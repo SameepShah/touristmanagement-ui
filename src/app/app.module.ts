@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -47,9 +48,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatInputModule,
     MatCardModule,
     MatSelectModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
+  bootstrap: [AppComponent],
+  entryComponents:[UpdateBranchComponent]
 })
 export class AppModule { }

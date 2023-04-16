@@ -139,9 +139,9 @@
                       </ng-container>
 
                       <tr mat-header-row *matHeaderRowDef="placesDisplayColumns"></tr>
-                        <tr mat-row *matRowDef="let place; columns: placesDisplayColumns;"
-                            [class.example-element-row]="place.placeId?.length" [class.example-expanded-row]="place?.expanded"
-                            (click)="place.expanded = !place?.expanded">
+                        <tr mat-row *matRowDef="let place; columns: placesDisplayColumns;">
+                            <!-- [class.example-element-row]="place.placeId?.length" [class.example-expanded-row]="place?.expanded"
+                            (click)="place.expanded = !place?.expanded" -->
                         </tr>
                     </table>
                   </div>
