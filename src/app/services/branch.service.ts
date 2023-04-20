@@ -24,4 +24,14 @@ export class BranchService {
       'Content-Type': 'application/json; charset=UTF-8'}
     });
   }
+
+  public updateBranch(updateObj: any){
+    const url = environment.branchApiUri + 'editbranch';
+    return this.http.post(url,updateObj,{
+      headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8'}
+    });
+  }
+
 }

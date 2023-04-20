@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <p>Tariff Amount</p>
   <mat-form-field>
-    <input matInput [(ngModel)]="data.place.tariffAmount">
+    <input matInput [(ngModel)]="data.place.tariffAmount"  (keypress)="validateOnlyNumbers($event)">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

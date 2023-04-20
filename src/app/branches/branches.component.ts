@@ -158,22 +158,26 @@ export class BranchesComponent implements OnInit, AfterViewInit {
 
       dialogRef.afterClosed().subscribe(res => {
         if(res){
-          console.log(res);
           //TODO: Prepare Database Object from returned value to Update and Call API to Update the same 
+          res.tariffAmount = Number(res.tariffAmount);
+          this.branchPlaces = JSON.parse(JSON.stringify(element.places));
+          this.branchPlaces = this.branchPlaces.map(obj => res.placeId == obj.placeId ?  res : obj);
+          var updatedObj = {
+            'id': element.id,
+            'branchCode': element.branchCode,
+            'places': this.branchPlaces
+          };
+          console.log(updatedObj);
+          this.branchService.updateBranch(updatedObj).subscribe((response: any)=>{
+            //On Edit Success reload Branches
+            this.searchBranches();
+          }, (response: any) => {
+            //TODO: Show Error in Snackbar AngularMaterial
+            console.log(response);
+          });
         }
       });
-
-      // this.branchPlaces = JSON.parse(JSON.stringify(element.places));
-      // console.log(this.branchPlaces);
-      // var updatedObj : Place =  {
-      //   'placeId': place.placeId,
-      //   'placeName': place.placeName,
-      //   'tariffAmount':10
-      // };
-      // this.branchPlaces =  this.branchPlaces.map(obj => place.placeId == obj.placeId ?  updatedObj : obj);
     }
-    //alert('Id: ' + element.id  + '\nBranchCode: ' + element.branchCode + '\nPlaces: ' + JSON.stringify(this.branchPlaces));
-    //console.log(element.places);
   }
 
 
