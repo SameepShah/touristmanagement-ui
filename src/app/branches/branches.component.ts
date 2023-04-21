@@ -122,6 +122,17 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     this.searchBranches();
   }
 
+  /**
+   * Search Event
+   */
+  searchClickEvent(){
+    if(this.paginator&& this.paginator.pageIndex){
+      this.paginator.pageIndex = 0;
+      this.currentPage = 0;
+    }
+    this.searchBranches();
+  }
+
   searchBranches(){
     this.isLoading = true;
     //Call Search Branches from ngOnInit and on Search Click
