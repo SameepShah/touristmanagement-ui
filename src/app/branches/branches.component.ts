@@ -9,6 +9,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog } from '@angular/material/dialog';
 import { UpdateBranchComponent } from '../update-branch/update-branch.component';
 import { Place } from '../models/Place';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 
 export interface PlaceDropdown{
   value: string;
@@ -58,7 +59,11 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   placesDisplayColumns: string[] = ['placeId','placeName','tariffAmount','edit'];
   branchPlaces: Place[] = [];
 
-  constructor(private branchService: BranchService, public dialog: MatDialog){
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  durationInSeconds: 5;
+
+  constructor(private branchService: BranchService, public dialog: MatDialog, private _snackBar: MatSnackBar){
     //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
@@ -170,10 +175,12 @@ export class BranchesComponent implements OnInit, AfterViewInit {
           console.log(updatedObj);
           this.branchService.updateBranch(updatedObj).subscribe((response: any)=>{
             //On Edit Success reload Branches
+            this.openSnackBar('Tariff Updated Successfully.');
             this.searchBranches();
           }, (response: any) => {
             //TODO: Show Error in Snackbar AngularMaterial
             console.log(response);
+            this.openSnackBar(response.error);
           });
         }
       });
@@ -190,4 +197,13 @@ export class BranchesComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'Ok', { 
+      horizontalPosition: this.horizontalPosition,  
+      verticalPosition: this.verticalPosition,
+      duration: this.durationInSeconds * 1000
+    });
+  }
+
 }
