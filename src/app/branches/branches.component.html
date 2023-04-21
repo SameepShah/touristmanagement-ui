@@ -38,7 +38,11 @@
         </mat-card>
     </div>
     <div class="vspacer"></div>
-    <h2>Branches</h2>
+    <div class="add-branch-container">
+        <h2>Branches</h2>
+        <button mat-raised-button color="primary" align="end" (click)="addBranchClickEvent()">Add Branch</button>
+    </div>
+    
     <div class="mat-elevation-z8" >
         <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
         <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>

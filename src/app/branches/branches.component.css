@@ -50,4 +50,9 @@ tr.example-element-row:not(.example-expanded-row):active {
     cursor: pointer;
     
 }
- 
+
+.add-branch-container{
+    display: flex; 
+    justify-content: space-between;
+}
+

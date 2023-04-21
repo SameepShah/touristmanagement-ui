@@ -1,6 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -56,6 +57,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   providers: [],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
-  entryComponents:[UpdateBranchComponent]
+  entryComponents:[UpdateBranchComponent, AddBranchComponent]
 })
 export class AppModule { }

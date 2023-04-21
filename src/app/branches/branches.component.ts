@@ -10,6 +10,7 @@ import {MatDialog } from '@angular/material/dialog';
 import { UpdateBranchComponent } from '../update-branch/update-branch.component';
 import { Place } from '../models/Place';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
+import { AddBranchComponent } from '../add-branch/add-branch.component';
 
 export interface PlaceDropdown{
   value: string;
@@ -196,6 +197,28 @@ export class BranchesComponent implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+
+  /**
+   * Add Branch Event
+   */
+  addBranchClickEvent(){
+    //this.openSnackBar('Add Branch Clicked');
+    const dialogRef = this.dialog.open(AddBranchComponent, {
+      panelClass:'add-branch-content',
+      data: 'Test'
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if(res) {
+          console.log(res);
+      }
+      else {
+        console.log(res);
+      }
+    });
+
   }
 
 

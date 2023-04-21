@@ -1,1 +1,68 @@
-<p>add-branch works!</p>
+<form class="add-form" [formGroup]="addBranchForm" (ngSubmit)="addBranch()">
+    <h1 mat-dialog-title>Add Branch</h1>
+
+    <div mat-dialog-content>
+        <mat-form-field class="full-width">
+            <mat-label>Branch Code</mat-label>
+            <input type="text" matInput formControlName="branchCodeControl" [errorStateMatcher]="matcher">
+            <mat-error
+                *ngIf="addBranchForm.get('branchCodeControl').hasError('maxlength') && !addBranchForm.get('branchCodeControl').hasError('required')">
+                Branch Code must be less than 50 characters
+            </mat-error>
+            <mat-error *ngIf="addBranchForm.get('branchCodeControl').hasError('required')">
+                Branch Code is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Branch Name</mat-label>
+            <input type="text" matInput formControlName="branchNameControl" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="addBranchForm.get('branchNameControl').hasError('maxlength') && !addBranchForm.get('branchNameControl').hasError('required')">
+                Branch Name must be less than 100 characters
+            </mat-error>
+            <mat-error *ngIf="addBranchForm.get('branchNameControl').hasError('required')">
+                Branch Name is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Website</mat-label>
+            <input type="url" matInput formControlName="websiteFormControl" [errorStateMatcher]="matcher"
+                placeholder="Ex. www.example.com">
+            <mat-error
+                *ngIf="addBranchForm.get('websiteFormControl').hasError('pattern') && !addBranchForm.get('websiteFormControl').hasError('required')">
+                Please enter a valid website
+            </mat-error>
+            <mat-error *ngIf="addBranchForm.get('websiteFormControl').hasError('required')">
+                Website is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Contact</mat-label>
+            <input type="tel" matInput placeholder="0999999999" formControlName="contactFormControl"
+                [errorStateMatcher]="matcher">
+            <mat-error
+                *ngIf="(addBranchForm.get('contactFormControl').hasError('pattern') || addBranchForm.get('contactFormControl').hasError('minlength')) && !addBranchForm.get('contactFormControl').hasError('required')">
+                Please enter a valid contact
+            </mat-error>
+            <mat-error *ngIf="addBranchForm.get('contactFormControl').hasError('required')">
+                Contact is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="emailFormControl" [errorStateMatcher]="matcher"
+                placeholder="Ex. pat@example.com">
+            <mat-error
+                *ngIf="addBranchForm.get('emailFormControl').hasError('email') && !addBranchForm.get('emailFormControl').hasError('required')">
+                Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="addBranchForm.get('emailFormControl').hasError('required')">
+                Email is required
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button mat-button (click)="onNoClick()" type="button">Cancel</button>
+        <button mat-raised-button color="primary" cdkFocusInitial type="submit" [disabled]="!addBranchForm.valid">Add
+            Branch</button>
+    </div>
+</form>
