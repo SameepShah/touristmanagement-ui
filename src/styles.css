@@ -4,7 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .add-branch-content {
-    height: 600px;
+    height: 750px;
     width: 800px;
     border-radius: 10px;
     background: white;

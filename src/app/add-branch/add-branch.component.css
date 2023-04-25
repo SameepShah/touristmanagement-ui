@@ -3,7 +3,20 @@
   }
   
   .full-width {
-    width: 100%;
+    max-width: 100%;
   }
 
+.flexContainer{
+  display: flex;
+}
+
+.formFieldMargin{
+  margin-right: 1rem;
+  width: 100%;
+}
+
+.matContent{
+  max-height: 600px;
+  height: 580px;
+}
   

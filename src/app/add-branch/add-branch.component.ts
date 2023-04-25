@@ -21,7 +21,12 @@ export class AddBranchComponent implements OnInit {
       branchNameControl : new FormControl('', [Validators.required, Validators.maxLength(100)]),
       emailFormControl : new FormControl('', [Validators.required, Validators.email]),
       websiteFormControl:  new FormControl('', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]),
-      contactFormControl: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10)])
+      contactFormControl: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10)]),
+      andaman: new FormControl('',[Validators.required]),
+      thailand: new FormControl('',[Validators.required]),
+      dubai: new FormControl('',[Validators.required]),
+      singapore: new FormControl('',[Validators.required]),
+      malaysia: new FormControl('',[Validators.required])
     });
     
     matcher = new MyErrorStateMatcher();
@@ -43,7 +48,32 @@ export class AddBranchComponent implements OnInit {
           branchName: this.addBranchForm.get('branchNameControl').value,
           email:this.addBranchForm.get('emailFormControl').value,
           website: this.addBranchForm.get('websiteFormControl').value,
-          contact: this.addBranchForm.get('contactFormControl').value
+          contact: this.addBranchForm.get('contactFormControl').value,
+          places:[{
+              "placeId": "1",
+              "placeName": "ANDAMAN",
+              "tariffAmount": this.addBranchForm.get('andaman').value
+          },
+          {
+              "placeId": "2",
+              "placeName": "THAILAND",
+              "tariffAmount": this.addBranchForm.get('thailand').value
+          },
+          {
+              "placeId": "3",
+              "placeName": "DUBAI",
+              "tariffAmount": this.addBranchForm.get('dubai').value
+          },
+          {
+              "placeId": "4",
+              "placeName": "SINGAPORE",
+              "tariffAmount": this.addBranchForm.get('singapore').value
+          },
+          {
+              "placeId": "5",
+              "placeName": "MALAYSIA",
+              "tariffAmount": this.addBranchForm.get('malaysia').value
+          }]
         }
         console.log(addBranchObj);
         alert("Add Branch Form is Valid");
