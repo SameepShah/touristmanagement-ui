@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { AddBranch } from '../models/AddBranch';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { BranchService } from '../services/branch.service';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-branch',
@@ -10,18 +12,26 @@ import {ErrorStateMatcher} from '@angular/material/core';
   styleUrls: ['./add-branch.component.css']
 })
 export class AddBranchComponent implements OnInit {
-  constructor(
+  constructor(private branchService: BranchService,
     public dialogRef: MatDialogRef<AddBranchComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { 
-
-    }
+    private _snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: any) {}
+    
     branch: AddBranch | null;
+    //Loader
+    isLoading: boolean = false;
+
+    //SnackBar
+    horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+    verticalPosition: MatSnackBarVerticalPosition = 'top';
+    durationInSeconds: 5;
+
     addBranchForm = new FormGroup({
       branchCodeControl : new FormControl('', [Validators.required, Validators.maxLength(50)]),
       branchNameControl : new FormControl('', [Validators.required, Validators.maxLength(100)]),
       emailFormControl : new FormControl('', [Validators.required, Validators.email]),
       websiteFormControl:  new FormControl('', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]),
-      contactFormControl: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10)]),
+      contactFormControl: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"),Validators.minLength(10), Validators.maxLength(10)]),
       andaman: new FormControl('',[Validators.required]),
       thailand: new FormControl('',[Validators.required]),
       dubai: new FormControl('',[Validators.required]),
@@ -39,8 +49,9 @@ export class AddBranchComponent implements OnInit {
     }
 
     addBranch(){
+      this.isLoading = true;
       if(this.addBranchForm.invalid){
-        alert("Add Branch Form is Invalid");
+        this.openSnackBar('Please provide valid details to add branch.');
       }
       else{
         var addBranchObj = {
@@ -76,10 +87,28 @@ export class AddBranchComponent implements OnInit {
           }]
         }
         console.log(addBranchObj);
-        alert("Add Branch Form is Valid");
+        this.branchService.addBranch(addBranchObj).subscribe((response: any)=>{
+          //On Add Success reload Branches on Branch Component
+          this.isLoading = false;
+          this.openSnackBar('Branch added successfully.');
+          this.dialogRef.close('success');
+          
+        }, (response: any) => {
+          this.isLoading = false;
+          console.log(response);
+          this.openSnackBar(response.error);
+        });
       }
-
     }
+
+    openSnackBar(message: string) {
+      this._snackBar.open(message, 'Ok', { 
+        horizontalPosition: this.horizontalPosition,  
+        verticalPosition: this.verticalPosition,
+        duration: this.durationInSeconds * 1000
+      });
+    }
+  
     
 
 }

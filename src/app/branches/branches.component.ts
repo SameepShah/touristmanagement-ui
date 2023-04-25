@@ -60,6 +60,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   placesDisplayColumns: string[] = ['placeId','placeName','tariffAmount','edit'];
   branchPlaces: Place[] = [];
 
+  //SnackBar
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   durationInSeconds: 5;
@@ -190,7 +191,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
             this.openSnackBar('Tariff Updated Successfully.');
             this.searchBranches();
           }, (response: any) => {
-            //TODO: Show Error in Snackbar AngularMaterial
+            //Show Error in Snackbar AngularMaterial
             console.log(response);
             this.openSnackBar(response.error);
           });
@@ -211,8 +212,8 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res) {
-          console.log(res);
+      if(res && res =='success') {
+        this.searchBranches();
       }
       else {
         console.log(res);

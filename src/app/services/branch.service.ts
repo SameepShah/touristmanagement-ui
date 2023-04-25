@@ -34,4 +34,14 @@ export class BranchService {
     });
   }
 
+  public addBranch(addObj: any){
+    const url = environment.branchApiUri + 'addbranch';
+    return this.http.post(url,addObj,{
+      headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8'}
+    });
+  }
+
+
 }

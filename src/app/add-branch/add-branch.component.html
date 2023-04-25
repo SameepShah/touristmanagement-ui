@@ -1,6 +1,7 @@
 <form class="add-form" [formGroup]="addBranchForm" (ngSubmit)="addBranch()">
     <h1 mat-dialog-title style="padding-bottom: 5px;">Add Branch</h1>
     <hr />
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
     <div mat-dialog-content class="matContent">
         <div class="flexContainer full-width">
             <mat-form-field class="formFieldMargin" appearance="outline">
@@ -30,7 +31,7 @@
                 <input type="tel" matInput placeholder="0999999999" formControlName="contactFormControl"
                     [errorStateMatcher]="matcher">
                 <mat-error
-                    *ngIf="(addBranchForm.get('contactFormControl').hasError('pattern') || addBranchForm.get('contactFormControl').hasError('minlength')) && !addBranchForm.get('contactFormControl').hasError('required')">
+                    *ngIf="(addBranchForm.get('contactFormControl').hasError('pattern') || addBranchForm.get('contactFormControl').hasError('minlength') || addBranchForm.get('contactFormControl').hasError('maxlength')) && !addBranchForm.get('contactFormControl').hasError('required')">
                     Please enter a valid contact
                 </mat-error>
                 <mat-error *ngIf="addBranchForm.get('contactFormControl').hasError('required')">
