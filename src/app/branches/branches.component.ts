@@ -48,9 +48,9 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   branchName: string = '';
   place: string = '';
   totalRows = 0;
-  pageSize = 1;
+  pageSize = 3; //Default PageSize
   currentPage = 0;
-  pageSizeOptions: number[] = [1, 3, 5, 10];
+  pageSizeOptions: number[] = [1, 3, 5, 10]; //Pagination Options
   message: string = '';
   isLoading: boolean = false;
 
@@ -66,66 +66,85 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   durationInSeconds: 5;
 
   constructor(private branchService: BranchService, public dialog: MatDialog, private _snackBar: MatSnackBar){
-    //this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
+  /**
+   * Init Method Call Search Branches
+   */
   ngOnInit() {
-    //Instead of getBranches call searchBranches (POST)
-    //this.getBranches();
     this.searchBranches();
   }
 
   ngAfterViewInit(){
-    //  this.dataSource.paginator = this.paginator;
-    //  this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Deprecated
+   */
   getBranches(){
     this.branchService.getBranches().subscribe(response=>{
       this.branches = response;
       this.reloadBranchTable(this.branches);
-      console.log(this.branches);
+      //console.log(this.branches);
     });
   }
 
+  /***
+   * Reload Branches
+   */
   reloadBranchTable(branches)
   {
-    //this.dataSource = new MatTableDataSource(branches);
-    //this.dataSource.paginator = this.paginator;
-    //this.dataSource.sort = this.sort;  
     this.dataSource.data = branches.branches;
     this.message= branches.message;
-    console.log(this.dataSource);
-    this.setDefaultSort();
+    //console.log(this.dataSource);
+    //this.setDefaultSort();
     this.setPagination(branches.totalRecords);
   }
 
+  /***
+   * Set Initial Pagination for Table
+   */
   setPagination(length){
     this.paginator.pageIndex = this.currentPage;
     this.paginator.length = length;
     this.totalRows = length;
   }
 
+  /***
+   * Set Default Sorting for Table (Deprecated)
+   */
   setDefaultSort(){
     const sortState: Sort = {active: 'branchCode', direction: 'asc'};
     this.sort.active = sortState.active;
     this.sort.direction = sortState.direction;
     this.sort.sortChange.emit(sortState);
+    //this.dataSource.sort = this.sort;
   }
 
+  /**
+   * Sort Change Event
+   * @param event 
+   */
+  sortChanged(event: Sort){
+    //Call Search Branches
+    this.searchBranches();
+  }
+
+
+  /**
+   * Pagination Page Change Event
+   * @param event 
+   */
   pageChanged(event: PageEvent) {
-    console.log({ event });
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
     this.totalRows = event.length;
-    console.log("Page Size " + event.pageSize);
-    console.log("Page Index " + event.pageIndex);
     //Call Search Branches
     this.searchBranches();
   }
 
   /**
-   * Search Event
+   * Search Click Event
    */
   searchClickEvent(){
     if(this.paginator&& this.paginator.pageIndex){
@@ -135,6 +154,9 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     this.searchBranches();
   }
 
+  /***
+   * Main method to Search/Get Branches from API with Parameters
+   */
   searchBranches(){
     this.isLoading = true;
     //Call Search Branches from ngOnInit and on Search Click
@@ -154,18 +176,21 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     }
     this.branchService.searchBranches(searchObj).subscribe((response: any)=>{
       this.branches = response.branches;
-      console.log(response);
+      //console.log(response);
       this.reloadBranchTable(response);
       this.isLoading = false;
     }, (response: any) => {
       this.branches = response.error.branches;
-      console.log(response);
+      //console.log(response);
       this.reloadBranchTable(response.error);
       this.isLoading = false;
     });
-    console.log(searchObj);
+    //console.log(searchObj);
   }
 
+  /***
+   * Edit Record Event
+   */
   editRecord(element: any, place: any){
     if (element.places) {
 
@@ -176,7 +201,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
 
       dialogRef.afterClosed().subscribe(res => {
         if(res){
-          //TODO: Prepare Database Object from returned value to Update and Call API to Update the same 
+          //Prepare Database Object from returned value to Update and Call API to Update the same 
           res.tariffAmount = Number(res.tariffAmount);
           this.branchPlaces = JSON.parse(JSON.stringify(element.places));
           this.branchPlaces = this.branchPlaces.map(obj => res.placeId == obj.placeId ?  res : obj);
@@ -185,14 +210,14 @@ export class BranchesComponent implements OnInit, AfterViewInit {
             'branchCode': element.branchCode,
             'places': this.branchPlaces
           };
-          console.log(updatedObj);
+          //console.log(updatedObj);
           this.branchService.updateBranch(updatedObj).subscribe((response: any)=>{
             //On Edit Success reload Branches
             this.openSnackBar('Tariff Updated Successfully.');
             this.searchBranches();
           }, (response: any) => {
             //Show Error in Snackbar AngularMaterial
-            console.log(response);
+            //console.log(response);
             this.openSnackBar(response.error);
           });
         }
@@ -216,13 +241,15 @@ export class BranchesComponent implements OnInit, AfterViewInit {
         this.searchBranches();
       }
       else {
-        console.log(res);
+        //console.log(res);
       }
     });
 
   }
 
-
+  /***
+   * Table inbuilt filter (Deprecated)
+   */
   applyFilter(event: Event) {
     const target = event.target as HTMLInputElement;
     var filterValue = target.value;
@@ -233,6 +260,9 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /***
+   * Click Event for Snack Message (OK Event)
+   */
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Ok', { 
       horizontalPosition: this.horizontalPosition,  

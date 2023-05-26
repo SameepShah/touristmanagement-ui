@@ -45,7 +45,9 @@
     
     <div class="mat-elevation-z8" >
         <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-        <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+        <table mat-table [dataSource]="dataSource" 
+               matSort (matSortChange)="sortChanged($event)" matSortActive="branchCode" matSortDirection="asc"
+               multiTemplateDataRows>
 
             <!--- Note that these columns can be defined in any order.
                   The actual rendered columns are set as a property on the row definition" -->
