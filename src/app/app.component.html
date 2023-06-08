@@ -7,13 +7,10 @@
     <h2 style="margin:0px !important">Tourist Management</h2>
     <span class="example-spacer"></span>
     <div>
+      <a mat-button [routerLink]="'/login'" *ngIf="!isAuthenticated"> Login </a>
       <a mat-button [routerLink]="'/branches'"> Branches </a>
-      <!-- <a mat-button [routerLink]="'/create-account'"> Create Account </a>
-      <a mat-button [routerLink]="'/contacts'"> Contacts </a>
-      <a mat-button [routerLink]="'/create-contact'"> Create Contact </a>
-      <a mat-button [routerLink]="'/activities'"> Activities </a>
-      <a mat-button [routerLink]="'/create-activity'"> Create Activity </a> -->
-
+      <a mat-button *mgIf="isAuthenticated" (click)="logout()"> Logout </a>
+     
     </div>
   </mat-toolbar-row>
 

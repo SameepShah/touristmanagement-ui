@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'touristmanagement-ui';
+  public isAuthenticated: boolean = false;
+
+  public logout(): void{
+    //TODO: Logout Functionality
+    alert("TODO: Logout Functionality");
+  }
 }

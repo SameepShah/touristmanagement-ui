@@ -180,10 +180,25 @@ export class BranchesComponent implements OnInit, AfterViewInit {
       this.reloadBranchTable(response);
       this.isLoading = false;
     }, (response: any) => {
-      this.branches = response.error.branches;
-      //console.log(response);
-      this.reloadBranchTable(response.error);
-      this.isLoading = false;
+      if(response && response.error)
+      {
+        this.branches = response.error.branches;
+        //console.log(response);
+        this.reloadBranchTable(response.error);
+        this.isLoading = false;
+      }
+      else if(response.status == 401){
+        this.isLoading = false;
+        this.branches = new Array<Branch>();
+        var unauthorizedResponse = {
+          branches: new Array<Branch>(),
+          message:'You are not authorized to view content.',
+          totalRecords: 0
+        };
+        this.reloadBranchTable(unauthorizedResponse);
+        this.openSnackBar('You are not authorized to view content.');
+      }
+      
     });
     //console.log(searchObj);
   }
