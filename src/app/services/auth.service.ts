@@ -40,7 +40,7 @@ export class AuthService implements OnDestroy {
    * @param username 
    * @param password 
    */
-  public signInWithCredentials(username: string, password: string): Observable<any>
+  private signInWithCredentials(username: string, password: string): Observable<any>
   {
     var requestData = {
       UserName: username,

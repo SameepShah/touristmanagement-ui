@@ -23,13 +23,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddBranchComponent,
     UpdateBranchComponent,
-    BranchesComponent
+    BranchesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
