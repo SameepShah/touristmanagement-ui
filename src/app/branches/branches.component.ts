@@ -187,7 +187,7 @@ export class BranchesComponent implements OnInit, AfterViewInit {
         this.reloadBranchTable(response.error);
         this.isLoading = false;
       }
-      else if(response.status == 401){
+      else if(response.status == 401 || response.status == 403){
         this.isLoading = false;
         this.branches = new Array<Branch>();
         var unauthorizedResponse = {

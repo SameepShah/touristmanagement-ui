@@ -62,21 +62,6 @@ export class AuthService implements OnDestroy {
     this._router.navigate([redirect]);
   }
 
-  // /**
-  //  * Logout Service Call
-  //  * @param redirect 
-  //  * @returns 
-  //  */
-  // public logout(redirect: string): Observable<void> {
-  //   return from(this._authClient.signOut()).pipe(
-  //     tap( _ => (this._authSub$.next(false), this._router.navigate([redirect]))),
-  //     catchError(err => {
-  //       console.error(err);
-  //       throw new Error('Unable to sign out');
-  //     })
-  //   )
-  // }
-
   /**
    * Handle Signin Response
    * @param transaction 
@@ -85,10 +70,13 @@ export class AuthService implements OnDestroy {
     if (response.jwtToken == undefined || response.jwtToken == '') {
       throw new Error('Unauthorized');
     }
-
     this._authSub$.next(response);
     //Set Session Storage or Header for each request with Bearer Token
     //this._authClient.session.setCookieAndRedirect(transaction.sessionToken);
+  }
+
+  public get GetUser(): TokenResponse {
+    return this._authSub$.value;
   }
 
 
