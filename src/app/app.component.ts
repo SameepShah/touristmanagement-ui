@@ -29,6 +29,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public logout(): void{
     //TODO: Logout Functionality
+    this._authService.logout('/login');
     alert("TODO: Logout Functionality");
   }
 

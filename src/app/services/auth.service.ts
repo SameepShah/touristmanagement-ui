@@ -82,7 +82,7 @@ export class AuthService implements OnDestroy {
    * @param transaction 
    */
   private handleSignInResponse(response: TokenResponse): void {
-    if (response.JwtToken == undefined || response.JwtToken == '') {
+    if (response.jwtToken == undefined || response.jwtToken == '') {
       throw new Error('Unauthorized');
     }
 

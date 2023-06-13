@@ -1,5 +1,5 @@
 export class TokenResponse{
-    public UserName: string;
-    public JwtToken: string;
-    public ExpiresIn: number;
+    public userName: string;
+    public jwtToken: string;
+    public expiresIn: number;
 }
