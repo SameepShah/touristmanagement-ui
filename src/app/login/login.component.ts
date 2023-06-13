@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { filter, Subject, take, takeUntil } from 'rxjs';
+import { TokenResponse } from '../models/TokenResponse';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._authService.isAuthenticated$.pipe(
-      filter((isAuthenticated: boolean) => isAuthenticated),
+      filter((isAuthenticated: TokenResponse) => (isAuthenticated != null && isAuthenticated.jwtToken != undefined)),
       takeUntil(this._destroySub$)
     ).subscribe( _ => this._router.navigateByUrl(this.returnUrl));
   }

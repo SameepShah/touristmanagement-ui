@@ -13,13 +13,13 @@ export class AuthService implements OnDestroy {
   
   constructor(private _router: Router, public http: HttpClient) { }
 
-  private _authSub$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public get isAuthenticated$(): Observable<boolean> {
+  private _authSub$: BehaviorSubject<TokenResponse> = new BehaviorSubject<TokenResponse>(null);
+  public get isAuthenticated$(): Observable<TokenResponse> {
     return this._authSub$.asObservable();
   }
 
   public ngOnDestroy(): void {
-    this._authSub$.next(false);
+    this._authSub$.next(null);
     this._authSub$.complete();
   }
 
@@ -58,7 +58,7 @@ export class AuthService implements OnDestroy {
    * Logout Functionality
    */
   public logout(redirect: string): void{
-    this._authSub$.next(false);
+    this._authSub$.next(null);
     this._router.navigate([redirect]);
   }
 
@@ -86,7 +86,7 @@ export class AuthService implements OnDestroy {
       throw new Error('Unauthorized');
     }
 
-    this._authSub$.next(true);
+    this._authSub$.next(response);
     //Set Session Storage or Header for each request with Bearer Token
     //this._authClient.session.setCookieAndRedirect(transaction.sessionToken);
   }

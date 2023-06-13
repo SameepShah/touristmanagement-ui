@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, UrlTree } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { map, Observable } from 'rxjs';
+import { TokenResponse } from './models/TokenResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthGuard implements CanActivate {
   public canActivate(): Observable<boolean | UrlTree> {
     return this._authService.isAuthenticated$
       .pipe(
-        map((s: boolean) => s ? true: this._router.parseUrl('/login'))
+        map((s: TokenResponse) => (s != null && s.jwtToken != undefined) ? true: this._router.parseUrl('/login'))
       );
   }
 }

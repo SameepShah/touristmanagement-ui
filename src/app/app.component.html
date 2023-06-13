@@ -8,7 +8,7 @@
     <span class="example-spacer"></span>
     <div>
       <a mat-button [routerLink]="'/login'" *ngIf="!isAuthenticated"> Login </a>
-      <a mat-button [routerLink]="'/branches'"> Branches </a>
+      <a mat-button [routerLink]="'/branches'" *ngIf="isAuthenticated"> Branches </a>
       <a mat-button *ngIf="isAuthenticated" (click)="logout()"> Logout </a>
      
     </div>

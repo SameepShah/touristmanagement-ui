@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
 import { AuthService } from './services/auth.service';
+import { TokenResponse } from './models/TokenResponse';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this._authService.isAuthenticated$.pipe(
       takeUntil(this._destroySub$)
-    ).subscribe((isAuthenticated: boolean) => this.isAuthenticated = isAuthenticated);
+    ).subscribe((isAuthenticated: TokenResponse) => this.isAuthenticated = (isAuthenticated != null && isAuthenticated.jwtToken != undefined));
   }
 
   public ngOnDestroy(): void {
@@ -30,7 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public logout(): void{
     //TODO: Logout Functionality
     this._authService.logout('/login');
-    alert("TODO: Logout Functionality");
   }
 
 
