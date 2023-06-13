@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private _destroySub$ = new Subject<void>();
   private readonly returnUrl: string;
-
+  public isLoading: boolean = false;
   /**
    * Constructor
    */
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
+    this.isLoading = true;
     this.loginValid = true;
 
     this._authService.login(this.username, this.password).pipe(
@@ -46,9 +47,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: _ => {
         this.loginValid = true;
+        this.isLoading = false;
         this._router.navigateByUrl('/branches');
       },
-      error: _ => this.loginValid = false
+      error: _ => { 
+        this.loginValid = false;
+        this.isLoading = false;
+      }
     });
   }
 

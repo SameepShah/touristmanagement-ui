@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { UpdateBranch } from '../models/UpdateBranch';
-
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-update-branch',
@@ -10,8 +10,12 @@ import { UpdateBranch } from '../models/UpdateBranch';
 })
 export class UpdateBranchComponent implements OnInit {
 
+    //Check Authorization
+    public isAuthorized: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<UpdateBranchComponent>,
+    private _authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: UpdateBranch) { 
 
     }
@@ -21,7 +25,12 @@ export class UpdateBranchComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.data);
+    var userRole = this._authService.GetRole();
+    if(userRole == "Company")
+      this.isAuthorized = true;
+    else
+      this.isAuthorized = false;
+    //console.log(this.data);
   }
 
   validateOnlyNumbers(evt) {

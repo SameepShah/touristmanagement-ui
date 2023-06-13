@@ -1,11 +1,14 @@
 <h1 mat-dialog-title>Update Place</h1>
-<div mat-dialog-content>
+<div mat-dialog-content *ngIf="isAuthorized">
   <p>Tariff Amount</p>
   <mat-form-field>
     <input matInput [(ngModel)]="data.place.tariffAmount"  (keypress)="validateOnlyNumbers($event)">
   </mat-form-field>
 </div>
+<div mat-dialog-content *ngIf="!isAuthorized">
+  <span>You are not authorized to view content.</span>
+</div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.place" cdkFocusInitial>Update</button>
+  <button mat-button [mat-dialog-close]="data.place" cdkFocusInitial *ngIf="isAuthorized">Update</button>
 </div>

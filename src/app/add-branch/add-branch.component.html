@@ -2,7 +2,7 @@
     <h1 mat-dialog-title style="padding-bottom: 5px;">Add Branch</h1>
     <hr />
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-    <div mat-dialog-content class="matContent">
+    <div mat-dialog-content class="matContent" *ngIf="isAuthorized">
         <div class="flexContainer full-width">
             <mat-form-field class="formFieldMargin" appearance="outline">
                 <mat-label>Branch Code</mat-label>
@@ -118,9 +118,12 @@
             </mat-card>
         </div>
     </div>
+    <div mat-dialog-content class="matContent" *ngIf="!isAuthorized">
+        <span>You are not authorized to view content.</span>
+    </div>
+        
     <div mat-dialog-actions align="end">
         <button mat-button (click)="onNoClick()" type="button">Cancel</button>
-        <button mat-raised-button color="primary" cdkFocusInitial type="submit" [disabled]="!addBranchForm.valid">Add
-            Branch</button>
+        <button mat-raised-button color="primary" cdkFocusInitial type="submit" [disabled]="!addBranchForm.valid" *ngIf="isAuthorized">Add Branch</button>
     </div>
 </form>

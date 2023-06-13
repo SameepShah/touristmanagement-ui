@@ -5,6 +5,7 @@ import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@a
 import {ErrorStateMatcher} from '@angular/material/core';
 import { BranchService } from '../services/branch.service';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition,} from '@angular/material/snack-bar';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-add-branch',
@@ -15,6 +16,7 @@ export class AddBranchComponent implements OnInit {
   constructor(private branchService: BranchService,
     public dialogRef: MatDialogRef<AddBranchComponent>,
     private _snackBar: MatSnackBar,
+    private _authService: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any) {}
     
     branch: AddBranch | null;
@@ -25,6 +27,9 @@ export class AddBranchComponent implements OnInit {
     horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     durationInSeconds: 5;
+
+    //Check Authorization
+    public isAuthorized: boolean = false;
 
     addBranchForm = new FormGroup({
       branchCodeControl : new FormControl('', [Validators.required, Validators.maxLength(50)]),
@@ -45,7 +50,12 @@ export class AddBranchComponent implements OnInit {
     }
 
     ngOnInit() {
-      console.log(this.data);
+      var userRole = this._authService.GetRole();
+      if(userRole == "Company")
+        this.isAuthorized = true;
+      else
+        this.isAuthorized = false;
+      //console.log(this.data);
     }
 
     addBranch(){

@@ -10,10 +10,13 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-  
-  constructor(private _router: Router, public http: HttpClient) { }
+  private _authSub$: BehaviorSubject<TokenResponse>;
+  private userRole: string = '';
+  constructor(private _router: Router, public http: HttpClient) { 
+    this._authSub$ =  new BehaviorSubject<TokenResponse>(JSON.parse(localStorage.getItem('user')));
+  }
 
-  private _authSub$: BehaviorSubject<TokenResponse> = new BehaviorSubject<TokenResponse>(null);
+  //private _authSub$: BehaviorSubject<TokenResponse> = new BehaviorSubject<TokenResponse>(null);
   public get isAuthenticated$(): Observable<TokenResponse> {
     return this._authSub$.asObservable();
   }
@@ -53,12 +56,16 @@ export class AuthService implements OnDestroy {
       'Content-Type': 'application/json; charset=UTF-8'}
     });
   }
+  public GetRole(){
+    return this.userRole;
+  }
 
   /**
    * Logout Functionality
    */
   public logout(redirect: string): void{
     this._authSub$.next(null);
+    localStorage.removeItem('user');
     this._router.navigate([redirect]);
   }
 
@@ -70,6 +77,8 @@ export class AuthService implements OnDestroy {
     if (response.jwtToken == undefined || response.jwtToken == '') {
       throw new Error('Unauthorized');
     }
+    this.userRole = response.role;
+    localStorage.setItem('user', JSON.stringify(response));
     this._authSub$.next(response);
     //Set Session Storage or Header for each request with Bearer Token
     //this._authClient.session.setCookieAndRedirect(transaction.sessionToken);
