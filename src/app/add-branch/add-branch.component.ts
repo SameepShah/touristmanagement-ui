@@ -55,9 +55,11 @@ export class AddBranchComponent implements OnInit {
         this.isAuthorized = true;
       else
         this.isAuthorized = false;
-      //console.log(this.data);
     }
 
+    /**
+     * Add Branch API Call
+     */
     addBranch(){
       this.isLoading = true;
       if(this.addBranchForm.invalid){
@@ -96,7 +98,6 @@ export class AddBranchComponent implements OnInit {
               "tariffAmount": this.addBranchForm.get('malaysia').value
           }]
         }
-        console.log(addBranchObj);
         this.branchService.addBranch(addBranchObj).subscribe((response: any)=>{
           //On Add Success reload Branches on Branch Component
           this.isLoading = false;
@@ -111,6 +112,10 @@ export class AddBranchComponent implements OnInit {
       }
     }
 
+    /**
+     * Open Snackbar for Given message
+     * @param message 
+     */
     openSnackBar(message: string) {
       this._snackBar.open(message, 'Ok', { 
         horizontalPosition: this.horizontalPosition,  

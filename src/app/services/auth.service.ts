@@ -16,7 +16,6 @@ export class AuthService implements OnDestroy {
     this._authSub$ =  new BehaviorSubject<TokenResponse>(JSON.parse(localStorage.getItem('user')));
   }
 
-  //private _authSub$: BehaviorSubject<TokenResponse> = new BehaviorSubject<TokenResponse>(null);
   public get isAuthenticated$(): Observable<TokenResponse> {
     return this._authSub$.asObservable();
   }
@@ -56,6 +55,11 @@ export class AuthService implements OnDestroy {
       'Content-Type': 'application/json; charset=UTF-8'}
     });
   }
+
+  /**
+   * Get Role of the Loggedin User
+   * @returns 
+   */
   public GetRole(){
     return this.userRole;
   }
@@ -80,10 +84,11 @@ export class AuthService implements OnDestroy {
     this.userRole = response.role;
     localStorage.setItem('user', JSON.stringify(response));
     this._authSub$.next(response);
-    //Set Session Storage or Header for each request with Bearer Token
-    //this._authClient.session.setCookieAndRedirect(transaction.sessionToken);
   }
 
+  /**
+   * Get User Object
+   */
   public get GetUser(): TokenResponse {
     return this._authSub$.value;
   }

@@ -30,9 +30,12 @@ export class UpdateBranchComponent implements OnInit {
       this.isAuthorized = true;
     else
       this.isAuthorized = false;
-    //console.log(this.data);
   }
 
+  /**
+   * Only Numbers Validations
+   * @param evt 
+   */
   validateOnlyNumbers(evt) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;

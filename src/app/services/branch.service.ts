@@ -16,6 +16,11 @@ export class BranchService {
     return this.http.get<Branch[]>(url);
   }
 
+  /**
+   * Search Service Call
+   * @param searchRequest 
+   * @returns 
+   */
   public searchBranches(searchRequest: any){
     const url = environment.adminApiUri + 'search';
     return this.http.post(url,searchRequest,{
@@ -25,6 +30,11 @@ export class BranchService {
     });
   }
 
+  /**
+   * Update Branch Service Call
+   * @param updateObj 
+   * @returns 
+   */
   public updateBranch(updateObj: any){
     const url = environment.branchApiUri + 'editbranch';
     return this.http.post(url,updateObj,{
@@ -34,6 +44,11 @@ export class BranchService {
     });
   }
 
+  /**
+   * Add Branch Service Call
+   * @param addObj 
+   * @returns 
+   */
   public addBranch(addObj: any){
     const url = environment.branchApiUri + 'addbranch';
     return this.http.post(url,addObj,{

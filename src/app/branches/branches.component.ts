@@ -85,7 +85,6 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     this.branchService.getBranches().subscribe(response=>{
       this.branches = response;
       this.reloadBranchTable(this.branches);
-      //console.log(this.branches);
     });
   }
 
@@ -96,8 +95,6 @@ export class BranchesComponent implements OnInit, AfterViewInit {
   {
     this.dataSource.data = branches.branches;
     this.message= branches.message;
-    //console.log(this.dataSource);
-    //this.setDefaultSort();
     this.setPagination(branches.totalRecords);
   }
 
@@ -176,14 +173,12 @@ export class BranchesComponent implements OnInit, AfterViewInit {
     }
     this.branchService.searchBranches(searchObj).subscribe((response: any)=>{
       this.branches = response.branches;
-      //console.log(response);
       this.reloadBranchTable(response);
       this.isLoading = false;
     }, (response: any) => {
       if(response && response.error)
       {
         this.branches = response.error.branches;
-        //console.log(response);
         this.reloadBranchTable(response.error);
         this.isLoading = false;
       }
@@ -200,7 +195,6 @@ export class BranchesComponent implements OnInit, AfterViewInit {
       }
       
     });
-    //console.log(searchObj);
   }
 
   /***
@@ -225,14 +219,12 @@ export class BranchesComponent implements OnInit, AfterViewInit {
             'branchCode': element.branchCode,
             'places': this.branchPlaces
           };
-          //console.log(updatedObj);
           this.branchService.updateBranch(updatedObj).subscribe((response: any)=>{
             //On Edit Success reload Branches
             this.openSnackBar('Tariff Updated Successfully.');
             this.searchBranches();
           }, (response: any) => {
             //Show Error in Snackbar AngularMaterial
-            //console.log(response);
             this.openSnackBar(response.error);
           });
         }
@@ -256,7 +248,6 @@ export class BranchesComponent implements OnInit, AfterViewInit {
         this.searchBranches();
       }
       else {
-        //console.log(res);
       }
     });
 

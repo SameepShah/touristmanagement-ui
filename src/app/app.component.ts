@@ -28,8 +28,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this._destroySub$.next();
   }
 
+  /**
+   * Logout
+   */
   public logout(): void{
-    //TODO: Logout Functionality
     this._authService.logout('/login');
   }
 

@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this._destroySub$.next();
   }
 
+  /**
+   * On Login Submit, Authenticate User
+   */
   public onSubmit(): void {
     this.isLoading = true;
     this.loginValid = true;
